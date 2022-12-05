@@ -28,8 +28,8 @@ public class StudentsController {
 		return new ResponseEntity<Map<String, Object>>(response, status);
 	}
 
-	@GetMapping("/students")
-	public ResponseEntity<?> getStudents() {
+	@GetMapping("/teacher/students")
+	public ResponseEntity<Map<String, Object>> getStudents() {
 		response.clear();
 		response.put("message", "Estos son todos los estudiantes");
 		response.put("Estudiantes", serviceStudents.getAllStudents());
@@ -37,7 +37,7 @@ public class StudentsController {
 	}
 
 	@GetMapping("/student/{id}")
-	public ResponseEntity<?> getStudent(@PathVariable Long id) {
+	public ResponseEntity<Map<String, Object>> getStudent(@PathVariable Long id) {
 		response.clear();
 		Students estudianteActual = serviceStudents.getStudentById(id);
 
@@ -51,12 +51,12 @@ public class StudentsController {
 	}
 
 	@PostMapping("/student")
-	public ResponseEntity<?> createStudent(@RequestBody Students payload) {
+	public ResponseEntity<Map<String, Object>> createStudent(@RequestBody Students payload) {
 		response.clear();
 		try {
 			response.put("message", "se creo correctamente el usuario");
 			response.put("Student", serviceStudents.createStudent(payload));
-			return responseTemplate(response, HttpStatus.OK);
+			return responseTemplate(response, HttpStatus.CREATED);
 		} catch (Exception e) {
 			response.put("message", "error al crear usuario");
 			response.put("error", e.getMessage());
@@ -65,8 +65,8 @@ public class StudentsController {
 
 	}
 
-	@DeleteMapping("/student/{id}")
-	public ResponseEntity<?> deleteStudent(@PathVariable Long id) {
+	@DeleteMapping("/admin/student/{id}")
+	public ResponseEntity<Map<String, Object>> deleteStudent(@PathVariable Long id) {
 		response.clear();
 		Students estudianteActual = serviceStudents.getStudentById(id);
 
@@ -85,11 +85,29 @@ public class StudentsController {
 			return responseTemplate(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	@PutMapping("/student/{id}")
-	public ResponseEntity<?> updateStudent(@RequestBody Students payload,@PathVariable Long id) {
-		return null;
+
+	@PutMapping("/admin/student/{id}")
+	public ResponseEntity<Map<String, Object>> updateStudent(@RequestBody Students payload, @PathVariable Long id) {
+		response.clear();
+		Students estudianteActual = serviceStudents.getStudentById(id);
+
+		if (estudianteActual == null) {
+			response.put("message", "El estudiante no fue encontrado");
+			return responseTemplate(response, HttpStatus.NOT_FOUND);
+		}
+
+		try {
+			response.put("message", "se creo modifico el usuario");
+			estudianteActual.setNombreEstudiante(payload.getNombreEstudiante());
+			estudianteActual.setApellidoEstudiante(payload.getApellidoEstudiante());
+			response.put("Student", serviceStudents.createStudent(estudianteActual));
+			return responseTemplate(response, HttpStatus.CREATED);
+		} catch (Exception e) {
+			response.put("message", "error al crear usuario");
+			response.put("error", e.getMessage());
+			return responseTemplate(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
 	}
-	
 
 }
