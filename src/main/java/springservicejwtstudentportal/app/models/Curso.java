@@ -1,5 +1,7 @@
 package springservicejwtstudentportal.app.models;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,7 +12,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class Curso {
+public class Curso implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,20 +26,19 @@ public class Curso {
 	@Column(unique = true)
 	private String numeroCurso;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "directorTeacher")
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "directorTeacher",unique = true,nullable = true)
 	private Teacher hasDirector;
 
 	public Curso() {
 
 	}
 	
-	public Curso(String numeroCurso, Teacher hasDirector) {
+	public Curso(String numeroCurso) {
 		this.numeroCurso = numeroCurso;
-		this.hasDirector = hasDirector;
+	
 	}
 
-	
 	
 	public Long getId() {
 		return id;

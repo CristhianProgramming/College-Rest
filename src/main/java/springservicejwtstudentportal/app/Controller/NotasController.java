@@ -21,8 +21,7 @@ public class NotasController {
 	
 	@Autowired
 	private INotasService notasService;
-	
-	private Map<String, Object> response = new HashMap<>();
+
 
 	public ResponseEntity<Map<String, Object>> responseTemplate(Map<String, Object> response, HttpStatus status) {
 		return new ResponseEntity<Map<String, Object>>(response, status);
@@ -30,7 +29,7 @@ public class NotasController {
 
 	@PostMapping("/teacher/add/nota")
 	public ResponseEntity<Map<String, Object>> addNotasStudent(@RequestBody Notas payload){
-		response.clear();
+			Map<String, Object> response = new HashMap<>();
 		try {
 			response.put("message", "Se asigno la nota a el estudiante ".concat(payload.getEstudianteCalificado().getNombreEstudiante()));
 			response.put("Nota Creada", notasService.createNota(payload));
@@ -44,6 +43,7 @@ public class NotasController {
 	
 	@GetMapping("/student/notas/{id}")
 	public ResponseEntity<Map<String, Object>> getNotasStudent(@PathVariable Long id){
+		Map<String, Object> response = new HashMap<>();
 		response.put("userType", "Student");
 		response.put("message", "Estas son tus notas estudiante");
 		response.put("Estudiantes", notasService.usersNotas("student",id));
@@ -52,6 +52,7 @@ public class NotasController {
 	
 	@GetMapping("/teacher/notas/{id}")
 	public ResponseEntity<Map<String, Object>> getNotasTeacher(@PathVariable Long id){
+		Map<String, Object> response = new HashMap<>();
 		response.put("userType", "profesor");
 		response.put("message", "Estas son tus notas profesor");
 		response.put("Estudiantes", notasService.usersNotas("teacher",id));

@@ -22,15 +22,13 @@ public class StudentsController {
 	@Autowired
 	private IStudentsService serviceStudents;
 
-	private Map<String, Object> response = new HashMap<>();
-
 	public ResponseEntity<Map<String, Object>> responseTemplate(Map<String, Object> response, HttpStatus status) {
 		return new ResponseEntity<Map<String, Object>>(response, status);
 	}
 
 	@GetMapping("/teacher/students")
 	public ResponseEntity<Map<String, Object>> getStudents() {
-		response.clear();
+			Map<String, Object> response = new HashMap<>();
 		response.put("message", "Estos son todos los estudiantes");
 		response.put("Estudiantes", serviceStudents.getAllStudents());
 		return responseTemplate(response, HttpStatus.OK);
@@ -38,7 +36,7 @@ public class StudentsController {
 
 	@GetMapping("/student/{id}")
 	public ResponseEntity<Map<String, Object>> getStudent(@PathVariable Long id) {
-		response.clear();
+			Map<String, Object> response = new HashMap<>();
 		Students estudianteActual = serviceStudents.getStudentById(id);
 
 		if (estudianteActual == null) {
@@ -52,7 +50,7 @@ public class StudentsController {
 
 	@PostMapping("/student")
 	public ResponseEntity<Map<String, Object>> createStudent(@RequestBody Students payload) {
-		response.clear();
+			Map<String, Object> response = new HashMap<>();
 		try {
 			response.put("message", "se creo correctamente el usuario");
 			response.put("Student", serviceStudents.createStudent(payload));
@@ -67,7 +65,7 @@ public class StudentsController {
 
 	@DeleteMapping("/admin/student/{id}")
 	public ResponseEntity<Map<String, Object>> deleteStudent(@PathVariable Long id) {
-		response.clear();
+			Map<String, Object> response = new HashMap<>();
 		Students estudianteActual = serviceStudents.getStudentById(id);
 
 		if (estudianteActual == null) {
@@ -88,7 +86,7 @@ public class StudentsController {
 
 	@PutMapping("/admin/student/{id}")
 	public ResponseEntity<Map<String, Object>> updateStudent(@RequestBody Students payload, @PathVariable Long id) {
-		response.clear();
+			Map<String, Object> response = new HashMap<>();
 		Students estudianteActual = serviceStudents.getStudentById(id);
 
 		if (estudianteActual == null) {

@@ -23,16 +23,13 @@ public class TeacherController {
 	@Autowired
 	private ITeacherServices serviceTeacher;
 
-	private Map<String, Object> response = new HashMap<>();
-
-
 	public ResponseEntity<Map<String, Object>> responseTemplate(Map<String, Object> response, HttpStatus status) {
 		return new ResponseEntity<Map<String, Object>>(response, status);
 	}
 
 	@GetMapping("/teachers/")
 	public ResponseEntity<Map<String, Object>> teachersGet() {
-		response.clear();
+		Map<String, Object> response = new HashMap<>();
 		response.put("message", "Estos son todos los profesores");
 		response.put("Teachers", serviceTeacher.getAllTeachers());
 		return this.responseTemplate(response, HttpStatus.OK);
@@ -40,7 +37,7 @@ public class TeacherController {
 
 	@GetMapping("/teacher/{id}")
 	public ResponseEntity<Map<String, Object>> teacherDetails(@PathVariable("id") Long id) {
-		response.clear();
+		Map<String, Object> response = new HashMap<>();
 		Teacher actualTeacher = serviceTeacher.getTeacher(id);
 		if (actualTeacher == null) {
 			response.put("message", "El profesor no existe");
@@ -53,7 +50,7 @@ public class TeacherController {
 
 	@PostMapping("/admin/teacher")
 	public ResponseEntity<Map<String, Object>> teacherCreate(@RequestBody Teacher payload) {
-		response.clear();
+		Map<String, Object> response = new HashMap<>();
 		try {
 			Teacher userInsert = new Teacher(payload.getDocumentoProfesor(), payload.getNombreProfesor(),
 					payload.getApellidoProfesor(), null, payload.getMateriaDictada());
@@ -70,7 +67,7 @@ public class TeacherController {
 
 	@PutMapping("/teacher/{id}")
 	public ResponseEntity<Map<String, Object>> teacherUpdate(@RequestBody Teacher payload, @PathVariable Long id) {
-		response.clear();
+		Map<String, Object> response = new HashMap<>();
 		Teacher actualTeacher = serviceTeacher.getTeacher(id);
 		if (actualTeacher == null) {
 			response.put("message", "El profesor no se pudo encontrar");
@@ -94,7 +91,7 @@ public class TeacherController {
 
 	@PutMapping("/admin/teacher/{id}")
 	public ResponseEntity<Map<String, Object>> teacherUpdateAdmin(@RequestBody Teacher payload, @PathVariable Long id) {
-		response.clear();
+		Map<String, Object> response = new HashMap<>();
 		Teacher actualTeacher = serviceTeacher.getTeacher(id);
 		if (actualTeacher == null) {
 			response.put("message", "El profesor no se pudo encontrar");
@@ -123,7 +120,7 @@ public class TeacherController {
 
 	@DeleteMapping("/admin/teacher/{id}")
 	public ResponseEntity<Map<String, Object>> teacherDelete(@PathVariable Long id) {
-		response.clear();
+		Map<String, Object> response = new HashMap<>();
 		Teacher actualTeacher = serviceTeacher.getTeacher(id);
 		if (actualTeacher == null) {
 			response.put("message", "El profesor no se pudo encontrar");
